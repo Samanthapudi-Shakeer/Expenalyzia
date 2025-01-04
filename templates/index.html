@@ -187,15 +187,11 @@ form button:focus {
 }
 #pie-chart, #bar-chart {
     width: 100%;
-    aspect-ratio: 4 / 3; /* Maintains a 4:3 aspect ratio */
-    max-width: 100%; /* Maximum width */
-    max-height: 375px; /* Maximum height */
+    aspect-ratio: 4 / 3; 
+    max-width: 100%; 
+    max-height: 375px; 
 }
-
-
-
-
-/* No Logs Message */
+        
 #no-logs-message {
     background-color: #444;
     padding: 15px;
@@ -295,10 +291,7 @@ form button:focus {
                 <select name="person" required>
                     <option disabled selected>-Select Person-</option>
                     <option value="common">Common</option>
-                    <option value="sampath">Sampath</option>
-                    <option value="manisha">Manisha</option>
-                    <option value="shannu">Shannu</option>
-                    <option value="shiny">Shiny</option>
+                    <option value="particular_name">Add your own particular names</option> <!--Please fill these IMPORTANT-->
                     <option value="others">Others</option>
                 </select>
                 <label> Amount 💵</label>
@@ -336,11 +329,7 @@ form button:focus {
                 <select id="filter-person">
                     <option value="">All Persons</option>
                     <option value="common">Common</option>
-                    <option value="sampath">Sampath</option>
-                    <option value="manisha">Manisha</option>
-                    <option value="shannu">Shannu</option>
-                    <option value="shiny">Shiny</option>
-                    <option value="others">Others</option>
+                    <!--Fill these IMPORTANT -->
                 </select>
                 <input type="date" id="filter-date-from" />
                 <input type="date" id="filter-date-to" />
@@ -357,8 +346,6 @@ form button:focus {
             </div>
         </div>
 
-        <!-- View Logs Section -->
-        <!-- View Logs Section with Filters -->
 <div id="log-history-container" class="section">
     <button onclick="showSection('nav')">Home</button>
     <h2>Filter Logs</h2>
@@ -385,7 +372,7 @@ form button:focus {
 
     <script>
       function fetchExpenses() {
-            fetch('/expenses')  // Adjust this URL as per your API endpoint
+            fetch('/expenses')  
                 .then(response => response.json())
                 .then(data => {
                     expensesData = data;
@@ -423,7 +410,7 @@ function removeExpense(expenseId) {
         .then(data => {
             if (data.status === "success") {
                 alert("Expense removed!");
-                showSection('expenses-list-container'); // Refresh the expense list after successful removal
+                showSection('expenses-list-container'); 
             } else {
                 alert(data.error);
             }
@@ -475,7 +462,7 @@ function removeExpense(expenseId) {
     });
 
     displayExpenses(filteredData);
-    renderCharts(filteredData); // Re-render charts with filtered data
+    renderCharts(filteredData); 
 
     if (filteredData.length === 0) {
         $('#expenses-list').html('<p>No Expenses found for the applied filters.</p>');
@@ -557,12 +544,10 @@ function renderCharts(expenses) {
         }
     });
 
-// Helper function to sum the amounts for a category
 function sumCategory(expenses, category) {
     return expenses.filter(exp => exp.category === category).reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
 }
-
-// Helper function to sum the amounts for a person
+    
 function sumPerson(expenses, person) {
     return expenses.filter(exp => exp.person === person).reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
 }
