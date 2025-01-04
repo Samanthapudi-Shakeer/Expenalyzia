@@ -45,7 +45,7 @@ def index():
     categories = ["food", "entertainment", "travel", "shopping", "edu", "provisions",
                   "vegetables", "fruits", "milk", "health", "hotels", "clothes",
                   "investments", "vehicle", "donations", "homeapp", "misc"]
-    persons = ["common", "sampath", "manisha", "shannu", "shiny", "others"]
+    persons = ["add your particular names", "others"]
     return render_template('index.html', categories=categories, persons=persons)
 
 # Get all expenses
