@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    /* General Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0a0c16;
+    margin: 0;
+    padding: 0;
+    color: #E0E0E0;
+    line-height: 1.6;
+}
+
+/* Heading Style */
+h1 {
+    text-align: center;
+    color: #440f5f;
+    margin-top: 40px;
+    font-size: 3em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: fadeIn 2s ease-out;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    animation: slideIn 1.5s ease-out;
+}
+
+/* Button Styles */
+button {
+    background: linear-gradient(45deg, #440f5f, #240833);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #240833, #440f5f);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Form Section */
+form {
+    background: #191e3a;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    animation: fadeIn 1.5s ease-out;
+}
+
+form label {
+    color: #ddd;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+form input,
+form select,
+form button {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: #ddd;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form select:focus,
+form button:focus {
+    border-color: #440f5f;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Filter Section */
+.filter-container {
+    background: #240833;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin-bottom: 30px;
+}
+
+.filter-container select,
+.filter-container input {
+    background-color: #444;
+    color: #ddd;
+    font-size: 16px;
+    border: 1px solid #444;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 8px;
+    transition: background-color 0.3s;
+}
+
+.filter-container select:hover,
+.filter-container input:hover {
+    background-color: #555;
+}
+
+/* Expense List */
+#expenses-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#expenses-list li {
+    background-color: #333;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.5s ease-out;
+}
+
+#expenses-list li button {
+    background-color: #E74C3C;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#expenses-list li button:hover {
+    background-color: #C0392B;
+}
+
+/* Log Section */
+#log-history-container {
+    background-color: #240833;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+#log-history-container button {
+    background-color: #E74C3C;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+#log-history-container button:hover {
+    background-color: #C0392B;
+}
+
+/* Charts */
+#pie-chart-container,
+#bar-chart-container {
+    background-color: #191e3a;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    padding: 25px;
+    margin-top: 40px;
+}
+#pie-chart, #bar-chart {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* Maintains a 4:3 aspect ratio */
+    max-width: 100%; /* Maximum width */
+    max-height: 375px; /* Maximum height */
+}
+
+
+
+
+/* No Logs Message */
+#no-logs-message {
+    background-color: #444;
+    padding: 15px;
+    border-radius: 8px;
+    color: #ddd;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .filter-container select,
+    .filter-container input {
+        width: 100%;
+    }
+
+    form input,
+    form select {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Tracker</h1>
+
+        <!-- Navigation Section -->
+        <div id="nav">
+            <button onclick="showSection('expense-form-container')">Enter Expense</button>
+            <button onclick="showSection('expenses-list-container')">Analyze Expenses</button>
+            <button onclick="showSection('log-history-container')">View Logs</button>
+        </div>
+
+        <!-- Enter Expense Form Section -->
+        <div id="expense-form-container" class="section">
+            <button onclick="showSection('nav')">Home</button>
+            <h2>Add Expense</h2>
+            <form id="expense-form" action="/add" method="POST">
+                <label>Date 🗓️</label>
+                <input type="date" style="width:60%" name="inputdate" required>
+                <label>Category</label>
+                <select name="category" required>
+                    <option disabled selected>-Select Category-</option>
+                    <option value="food">Food</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="travel">Travel</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="edu">Education</option>
+                    <option value="provisions">Provisions</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="milk">Milk</option>
+                    <option value="health">Health</option>
+                    <option value="hotels">Hotels</option>
+                    <option value="clothes">Clothes</option>
+                    <option value="investments">Investments</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="donations">Donations</option>
+                    <option value="homeapp">Home Appliances</option>
+                    <option value="misc">Miscellaneous</option>
+                </select>
+                <label>Person 🧑‍🧑‍🧒‍🧒</label>
+                <select name="person" required>
+                    <option disabled selected>-Select Person-</option>
+                    <option value="common">Common</option>
+                    <option value="sampath">Sampath</option>
+                    <option value="manisha">Manisha</option>
+                    <option value="shannu">Shannu</option>
+                    <option value="shiny">Shiny</option>
+                    <option value="others">Others</option>
+                </select>
+                <label> Amount 💵</label>
+                <input type="number" name="amount" placeholder="Enter Amount" required>
+                <button type="submit">Add Expense</button>
+            </form>
+        </div>
+
+        <!-- View Expenses and Filter Section -->
+        <div id="expenses-list-container" class="section">
+            <button onclick="showSection('nav')">Home</button>
+            <h2>Expenses</h2>
+            <div class="filter-container">
+                <!-- Filters (Category, Person, Date Range) -->
+                <select id="filter-category">
+                    <option value="">All Categories</option>
+                    <option value="food">Food</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="travel">Travel</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="edu">Education</option>
+                    <option value="provisions">Provisions</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="milk">Milk</option>
+                    <option value="health">Health</option>
+                    <option value="hotels">Hotels</option>
+                    <option value="clothes">Clothes</option>
+                    <option value="investments">Investments</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="donations">Donations</option>
+                    <option value="homeapp">Home Appliances</option>
+                    <option value="misc">Miscellaneous</option>
+                </select>
+                <select id="filter-person">
+                    <option value="">All Persons</option>
+                    <option value="common">Common</option>
+                    <option value="sampath">Sampath</option>
+                    <option value="manisha">Manisha</option>
+                    <option value="shannu">Shannu</option>
+                    <option value="shiny">Shiny</option>
+                    <option value="others">Others</option>
+                </select>
+                <input type="date" id="filter-date-from" />
+                <input type="date" id="filter-date-to" />
+                <button onclick="applyFilters()">Apply Filters</button>
+            </div>
+
+            <ul id="expenses-list"></ul>
+            <!-- Pie and Bar Charts -->
+            <div id="pie-chart-container">
+                <canvas id="pie-chart"></canvas>
+            </div>
+            <div id="bar-chart-container">
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- View Logs Section -->
+        <!-- View Logs Section with Filters -->
+<div id="log-history-container" class="section">
+    <button onclick="showSection('nav')">Home</button>
+    <h2>Filter Logs</h2>
+    
+    <!-- Log Filter Section -->
+    <div class="filter-container">
+        <select id="filter-log-action">
+            <option value="">All Actions</option>
+            <option value="add">Add</option>
+            <option value="edit">Edit</option>
+            <option value="remove">Remove</option>
+        </select>
+        <input type="date" id="filter-log-date-from" />
+        <input type="date" id="filter-log-date-to" />
+        <button onclick="applyLogFilters()">Apply Filters</button>
+    </div>
+
+    <button id="view-log-btn" onclick="toggleLog()">View Log</button>
+    <div id="log-history" style="display: none;"></div>
+    <p id="no-logs-message" style="display: none;">No log history available.</p>
+</div>
+
+    </div>
+
+    <script>
+      function fetchExpenses() {
+            fetch('/expenses')  // Adjust this URL as per your API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    expensesData = data;
+                    displayExpenses(data);
+                    renderCharts(data);
+                });
+        }
+    function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
+            // Show the selected section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+
+        function editExpense(expenseId) {
+    const data = {
+        inputdate: prompt("Enter new date (YYYY-MM-DD):"),
+        category: prompt("Enter new category:"),
+        person: prompt("Enter new person:"),
+        amount: prompt("Enter new amount:")
+    };
+
+    fetch(`/edit/${expenseId}`, {
+        method: 'POST',
+        body: new URLSearchParams(data)
+    }).then(response => response.json())
+      .then(data => alert(data.status === "success" ? "Expense updated!" : data.error));
+      
+}
+
+function removeExpense(expenseId) {
+    fetch(`/remove/${expenseId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Expense removed!");
+                showSection('expenses-list-container'); // Refresh the expense list after successful removal
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+}
+
+
+        let expensesData = [];
+        let chartInstancePie = null;
+        let chartInstanceBar = null;
+
+        $(document).ready(function () {
+            showSection('nav');
+            fetchExpenses();  // Initial fetch of expenses
+        });
+
+
+        function displayExpenses(data) {
+            const expensesList = $('#expenses-list');
+            expensesList.empty();
+            data.forEach(exp => {
+                expensesList.append(`
+                    <li>
+                        <b>Category:</b> ${exp.category} | 
+                        <b>Person:</b> ${exp.person} | 
+                        <b>Amount:</b> ${exp.amount} | 
+                        <b>Date:</b> ${exp.date} |
+                        <button onclick="editExpense('${exp.id}')">Edit</button>
+                        <button onclick="removeExpense('${exp.id}')">Remove</button>
+                    </li>
+                `);
+            });
+        }
+
+        function applyFilters() {
+    const personFilter = $('#filter-person').val();
+    const categoryFilter = $('#filter-category').val();
+    const dateFrom = $('#filter-date-from').val();
+    const dateTo = $('#filter-date-to').val();
+
+    const filteredData = expensesData.filter(exp => {
+        let match = true;
+        if (personFilter) match &= exp.person === personFilter;
+        if (categoryFilter) match &= exp.category === categoryFilter;
+        if (dateFrom) match &= new Date(exp.date) >= new Date(dateFrom);
+        if (dateTo) match &= new Date(exp.date) <= new Date(dateTo);
+        return match;
+    });
+
+    displayExpenses(filteredData);
+    renderCharts(filteredData); // Re-render charts with filtered data
+
+    if (filteredData.length === 0) {
+        $('#expenses-list').html('<p>No Expenses found for the applied filters.</p>');
+    }
+}
+
+function renderCharts(expenses) {
+    const pieData = {
+        labels: ["Food", "Entertainment", "Travel", "Shopping", "Edu", "Provisions", "Vegetables", "Fruits", "Milk", "Health", "Hotels", "Clothes", "Investments", "Vehicle", "Donations", "Homeapp", "Misc"],
+        datasets: [{
+            data: [
+                sumCategory(expenses, 'food'),
+                sumCategory(expenses, 'entertainment'),
+                sumCategory(expenses, 'travel'),
+                sumCategory(expenses, 'shopping'),
+                sumCategory(expenses, 'edu'),
+                sumCategory(expenses, 'provisions'),
+                sumCategory(expenses, 'vegetables'),
+                sumCategory(expenses, 'fruits'),
+                sumCategory(expenses, 'milk'),
+                sumCategory(expenses, 'health'),
+                sumCategory(expenses, 'hotels'),
+                sumCategory(expenses, 'clothes'),
+                sumCategory(expenses, 'investments'),
+                sumCategory(expenses, 'vehicle'),
+                sumCategory(expenses, 'donations'),
+                sumCategory(expenses, 'homeapp'),
+                sumCategory(expenses, 'misc')
+            ]
+        }]
+    };
+
+    const barData = {
+        labels: ["Common", "Sampath", "Manisha", "Shannu", "Shiny", "Others"],
+        datasets: [{
+            data: [
+                sumPerson(expenses, 'common'),
+                sumPerson(expenses, 'sampath'),
+                sumPerson(expenses, 'manisha'),
+                sumPerson(expenses, 'shannu'),
+                sumPerson(expenses, 'shiny'),
+                sumPerson(expenses, 'others')
+            ]
+        }]
+    };
+
+    if (chartInstancePie) chartInstancePie.destroy();
+    if (chartInstanceBar) chartInstanceBar.destroy();
+
+    chartInstancePie = new Chart(document.getElementById('pie-chart'), {
+        type: 'pie',
+        data: pieData,
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': $' + tooltipItem.raw;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    chartInstanceBar = new Chart(document.getElementById('bar-chart'), {
+        type: 'bar',
+        data: barData,
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': $' + tooltipItem.raw;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+// Helper function to sum the amounts for a category
+function sumCategory(expenses, category) {
+    return expenses.filter(exp => exp.category === category).reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
+}
+
+// Helper function to sum the amounts for a person
+function sumPerson(expenses, person) {
+    return expenses.filter(exp => exp.person === person).reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
+}
+
+
+    if (chartInstancePie) chartInstancePie.destroy();
+    if (chartInstanceBar) chartInstanceBar.destroy();
+
+    chartInstancePie = new Chart(document.getElementById('pie-chart'), {
+        type: 'pie',
+        data: pieData,
+    });
+
+    chartInstanceBar = new Chart(document.getElementById('bar-chart'), {
+        type: 'bar',
+        data: barData,
+    });
+}
+
+        let logsData = [];  // Store the logs data
+
+function toggleLog() {
+    const logHistory = $('#log-history');
+    const noLogsMessage = $('#no-logs-message');
+    const viewLogBtn = $('#view-log-btn');
+
+    if (logHistory.is(':visible')) {
+        logHistory.hide();
+        viewLogBtn.text('View Log');
+    } else {
+        fetch('/log')  // Adjust this URL for your log fetching endpoint
+            .then(response => response.json())
+            .then(logs => {
+                logsData = logs; // Save the fetched logs
+                applyLogFilters(); // Apply filters immediately after loading the logs
+                viewLogBtn.text('Hide Log');
+            });
+    }
+}
+
+function applyLogFilters() {
+    const actionFilter = $('#filter-log-action').val();
+    const dateFrom = $('#filter-log-date-from').val();
+    const dateTo = $('#filter-log-date-to').val();
+
+    // Filter the logs based on the action type and date range
+    const filteredLogs = logsData.filter(log => {
+        let match = true;
+        if (actionFilter) match &= log.action.toLowerCase().includes(actionFilter.toLowerCase());
+        if (dateFrom) match &= new Date(log.timestamp) >= new Date(dateFrom);
+        if (dateTo) match &= new Date(log.timestamp) <= new Date(dateTo);
+        return match;
+    });
+
+    displayLogs(filteredLogs);  // Update the log display with filtered results
+    
+}
+
+function displayLogs(logs) {
+    const logHistory = $('#log-history');
+    const noLogsMessage = $('#no-logs-message');
+
+    if (logs.length > 0) {
+        logHistory.empty(); // Clear any existing logs
+        logs.forEach(log => {
+            const expense = log.expense; // Extract the expense object
+            const expenseDetails = `
+                Date: ${expense.date || 'N/A'},
+                Category: ${expense.category || 'N/A'},
+                Person: ${expense.person || 'N/A'},
+                Amount: ₹${expense.amount || 'N/A'}
+            `;
+            logHistory.append(`
+                <p>
+                    <strong>${log.action}</strong>: ${expenseDetails} 
+                    at ${log.timestamp}
+                </p>
+            `);
+        });
+        logHistory.show(); // Show the logs section
+        noLogsMessage.hide(); // Hide the "no logs" message
+    } else {
+        logHistory.hide(); // Hide the logs section
+        noLogsMessage.show(); // Show the "no logs" message
+    }
+}
+
+    </script>
+</body>
+</html>
+

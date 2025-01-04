@@ -1,0 +1,4 @@
+Expenses Analysis
+I : date,types of expenditure (provisions,vegetables,milk,edu fees,health,restaurants,clothes.investments,vehicle maintanence,donations,home appliances,misc : person classification : common,individual(1-4)
+O : date wise filter ,filter on each type, filter on each person, filter on each person for a particular type 
+Vis : Graphical Representation of date wise filter.

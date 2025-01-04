@@ -1,0 +1,106 @@
+[
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735744632.267702,
+            "date": "2025-01-01",
+            "category": "vehicle",
+            "person": "common",
+            "amount": 340.0,
+            "added_date": "2025-01-01 20:47:12",
+            "last_modified": "2025-01-01 20:47:12"
+        },
+        "timestamp": "2025-01-01 20:47:12"
+    },
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735744696.861516,
+            "date": "2025-01-01",
+            "category": "homeapp",
+            "person": "sampath",
+            "amount": 23456.0,
+            "added_date": "2025-01-01 20:48:16",
+            "last_modified": "2025-01-01 20:48:16"
+        },
+        "timestamp": "2025-01-01 20:48:16"
+    },
+    {
+        "action": "Edited",
+        "expense": {
+            "id": 1735744696.861516,
+            "date": "0102-09-18",
+            "category": "misc",
+            "person": "common",
+            "amount": 340.0,
+            "added_date": "2025-01-01 20:48:16",
+            "last_modified": "2025-01-01 20:50:05"
+        },
+        "timestamp": "2025-01-01 20:50:05"
+    },
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735744903.789083,
+            "date": "2025-01-01",
+            "category": "homeapp",
+            "person": "common",
+            "amount": 152.0,
+            "added_date": "2025-01-01 20:51:43",
+            "last_modified": "2025-01-01 20:51:43"
+        },
+        "timestamp": "2025-01-01 20:51:43"
+    },
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735745316.393597,
+            "date": "2025-01-01",
+            "category": "donations",
+            "person": "common",
+            "amount": 124.0,
+            "added_date": "2025-01-01 20:58:36",
+            "last_modified": "2025-01-01 20:58:36"
+        },
+        "timestamp": "2025-01-01 20:58:36"
+    },
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735745503.935925,
+            "date": "2025-01-08",
+            "category": "homeapp",
+            "person": "manisha",
+            "amount": 1234.0,
+            "added_date": "2025-01-01 21:01:43",
+            "last_modified": "2025-01-01 21:01:43"
+        },
+        "timestamp": "2025-01-01 21:01:43"
+    },
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735745746.044024,
+            "date": "2025-01-02",
+            "category": "homeapp",
+            "person": "common",
+            "amount": 1234.0,
+            "added_date": "2025-01-01 21:05:46",
+            "last_modified": "2025-01-01 21:05:46"
+        },
+        "timestamp": "2025-01-01 21:05:46"
+    },
+    {
+        "action": "Added",
+        "expense": {
+            "id": 1735745905.20195,
+            "date": "2025-01-01",
+            "category": "food",
+            "person": "common",
+            "amount": 1000.0,
+            "added_date": "2025-01-01 21:08:25",
+            "last_modified": "2025-01-01 21:08:25"
+        },
+        "timestamp": "2025-01-01 21:08:25"
+    }
+]
